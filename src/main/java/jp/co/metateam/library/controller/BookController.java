@@ -1,5 +1,7 @@
 package jp.co.metateam.library.controller;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import jp.co.metateam.library.model.Account;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.service.BookMstService;
@@ -49,6 +52,29 @@ public class BookController {
         }
 
         return "book/add";
+    }
+
+    @PostMapping("/book/add")
+    public String bookAdd(@ModelAttribute BookMstDto bookMstDto, BindingResult result, RedirectAttributes ra, Model model) {
+        try {
+            ArrayList<String> titleList = new ArrayList<>();
+            ArrayList<String> isbnList = new ArrayList<>();
+            boolean errorFlag = false;
+
+            errorFlag = bookMstService.isBookMstExist(bookMstDto, model, titleList, isbnList, errorFlag);
+            if (errorFlag) {
+                return "book/add";
+            }
+            bookMstService.save(bookMstDto);
+            return "redirect:/book/index";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            ra.addFlashAttribute("bookMstDto", bookMstDto);
+            ra.addFlashAttribute("org.springframework.validation.BindingResult.accountDto", result);
+
+            return "book/add";
+        }
     }
     
 }
