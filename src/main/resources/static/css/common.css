@@ -141,6 +141,20 @@ footer {
     color: red;
 }
 
+.error_msg li {
+    color: red;
+    font-size: 14px;
+    list-style: none;
+  }
+
+  ul.error_msg {
+    padding-left: 0 !important;
+    margin: 5px 0 0 0; /* 上・右・下・左 */
+    list-style: none;
+    color: red;
+    font-size: 13px;
+  }
+
 .inner_contens.error table {
     width: 100%;
 }
@@ -200,6 +214,7 @@ footer {
 .flexarea {
     display: flex;
     justify-content: space-between;
+    align-items: center; 
 }
 
 .link {
